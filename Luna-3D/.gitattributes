@@ -1,0 +1,2 @@
+sample_scans/*.raw filter=lfs diff=lfs merge=lfs -text
+sample_scans/*.mhd filter=lfs diff=lfs merge=lfs -text
