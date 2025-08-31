@@ -70,5 +70,5 @@ The core of the project is a 3D Convolutional Neural Network. The typical archit
     ```
 
 ##  Usage
-Follow these steps to run the pipeline.
-
+Run the notebook run_everything.ipynb for training and visualization.
+Run ```tensorboard --logdir=runs``` to view training metrics.
