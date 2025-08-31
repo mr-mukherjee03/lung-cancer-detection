@@ -209,3 +209,5 @@ luna
 luna/
 .gradio
 sample_scans
+lunaenv/
+lunaenv

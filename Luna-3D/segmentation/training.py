@@ -454,28 +454,6 @@ class SegmentationTrainingApp:
 
         return score
 
-    # def logModelMetrics(self, model):
-    #     writer = getattr(self, 'trn_writer')
-    #
-    #     model = getattr(model, 'module', model)
-    #
-    #     for name, param in model.named_parameters():
-    #         if param.requires_grad:
-    #             min_data = float(param.data.min())
-    #             max_data = float(param.data.max())
-    #             max_extent = max(abs(min_data), abs(max_data))
-    #
-    #             # bins = [x/50*max_extent for x in range(-50, 51)]
-    #
-    #             writer.add_histogram(
-    #                 name.rsplit('.', 1)[-1] + '/' + name,
-    #                 param.data.cpu().numpy(),
-    #                 # metrics_a[METRICS_PRED_NDX, negHist_mask],
-    #                 self.totalTrainingSamples_count,
-    #                 # bins=bins,
-    #             )
-    #
-    #             # print name, param.data
 
     def saveModel(self, type_str, epoch_ndx, isBest=False):
         file_path = os.path.join(

@@ -32,9 +32,6 @@ CandidateInfoTuple = namedtuple('CandidateInfoTuple', 'isNodule_bool, diameter_m
 
 @functools.lru_cache(1)
 def getCandidateInfoList(requireOnDisk_bool=True):
-    # We construct a set with all series_uids that are present on disk.
-    # This will let us use the data, even if we haven't downloaded all of
-    # the subsets yet.
 
     mhd_list = glob.glob(f'/kaggle/input/luna16/luna16/luna16/subset[6-8]/subset[6-8]/*.mhd')
     presentOnDisk_set = {os.path.split(p)[-1][:-4] for p in mhd_list}
@@ -92,10 +89,6 @@ class Ct:
         ct_mhd = sitk.ReadImage(mhd_path)
         ct_a = np.array(sitk.GetArrayFromImage(ct_mhd), dtype=np.float32)
 
-        # CTs are natively expressed in https://en.wikipedia.org/wiki/Hounsfield_scale
-        # HU are scaled oddly, with 0 g/cc (air, approximately) being -1000 and 1 g/cc (water) being 0.
-        # The lower bound gets rid of negative density stuff used to indicate out-of-FOV
-        # The upper bound nukes any weird hotspots and clamps bone down
         ct_a.clip(-1000, 1000, ct_a)
 
         self.series_uid = series_uid
@@ -121,14 +114,12 @@ class Ct:
             assert center_val >= 0 and center_val < self.hu_a.shape[axis], repr([self.series_uid, center_xyz, self.origin_xyz, self.vxSize_xyz, center_irc, axis])
 
             if start_ndx < 0:
-                # log.warning("Crop outside of CT array: {} {}, center:{} shape:{} width:{}".format(
-                #     self.series_uid, center_xyz, center_irc, self.hu_a.shape, width_irc))
+                
                 start_ndx = 0
                 end_ndx = int(width_irc[axis])
 
             if end_ndx > self.hu_a.shape[axis]:
-                # log.warning("Crop outside of CT array: {} {}, center:{} shape:{} width:{}".format(
-                #     self.series_uid, center_xyz, center_irc, self.hu_a.shape, width_irc))
+                
                 end_ndx = self.hu_a.shape[axis]
                 start_ndx = int(self.hu_a.shape[axis] - width_irc[axis])
 
